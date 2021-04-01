@@ -1,57 +1,29 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Title from '../Title.js';
-import Book from '../components/Book.js';
+import Title from "../Title.js";
+import Bookshelf from "../components/Bookshelf.js";
 
 class Main extends Component {
+  categories = [
+    { shelf: "currentlyReading", title: "Currently Reading" },
+    { shelf: "wantToRead", title: "Want To Read" },
+    { shelf: "read", title: "Read" },
+  ];
+
   render() {
+    const { books } = this.props;
     return (
       <div className="list-books">
         <Title />
         <div className="list-books-content">
           <div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Currently Reading</h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                  <li>
-                    <Book />
-                  </li>
-                  <li>
-                    <Book />
-                  </li>
-                </ol>
-              </div>
-            </div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Want to Read</h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                  <li>
-                    <Book />
-                  </li>
-                  <li>
-                    <Book />
-                  </li>
-                </ol>
-              </div>
-            </div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Read</h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                  <li>
-                    <Book />
-                  </li>
-                  <li>
-                    <Book />
-                  </li>
-                  <li>
-                    <Book />
-                  </li>
-                </ol>
-              </div>
-            </div>
+            {this.categories.map((category) => (
+              <Bookshelf
+                key={category.shelf}
+                category={category}
+                books={books.filter((b) => b.shelf === category.shelf)}
+              />
+            ))}
           </div>
         </div>
         <div className="open-search">
