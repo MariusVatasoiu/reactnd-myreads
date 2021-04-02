@@ -1,7 +1,40 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import * as BooksAPI from "../BooksAPI";
+import Book from "../components/Book";
+import { debounce } from "lodash-es";
 
 class Search extends Component {
+  state = {
+    query: "",
+    books: [],
+  };
+
+  search = debounce((query) => {
+    BooksAPI.search(query).then((response) => {
+      let books = response;
+      if (!response || response.error) {
+        books = [];
+      }
+      this.setState(() => ({ books }));
+    }).catch(() => {
+      this.setState(() => ({ books: [] }));
+    });
+  }, 500);
+
+  handleChange = (event) => {
+    event.persist();
+    const query = event.target.value;
+    this.setState(() => ({ query }));
+
+    if (query.length === 0) {
+      this.setState(() => ({ books: [] }));
+      return;
+    }
+
+    this.search(query);
+  };
+
   render() {
     return (
       <div className="search-books">
@@ -23,11 +56,22 @@ class Search extends Component {
                   you don't find a specific author or title. Every search is limited by search terms.
                 */
             }
-            <input type="text" placeholder="Search by title or author" />
+            <input
+              type="text"
+              placeholder="Search by title or author"
+              onChange={this.handleChange}
+              value={this.state.query}
+            />
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <ol className="books-grid">
+            {this.state.books.map((book) => (
+              <li key={book.id}>
+                <Book book={book} />
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     );
