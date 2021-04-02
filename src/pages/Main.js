@@ -11,7 +11,7 @@ class Main extends Component {
   ];
 
   render() {
-    const { books } = this.props;
+    const { books, onUpdateBook } = this.props;
     return (
       <div className="list-books">
         <Title />
@@ -22,6 +22,7 @@ class Main extends Component {
                 key={category.shelf}
                 category={category}
                 books={books.filter((b) => b.shelf === category.shelf)}
+                onUpdateBook={onUpdateBook}
               />
             ))}
           </div>

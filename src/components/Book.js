@@ -1,8 +1,20 @@
 import React, { Component } from "react";
 
 class Book extends Component {
+  state = {
+    value: this.props.book.shelf,
+  };
+
+  handleChange = (event) => {
+    event.persist();
+    
+    // this.setState(() => ({
+    //   value: event.target.value,
+    // }));
+    this.props.onUpdateBook(this.props.book, event.target.value);
+  };
+
   render() {
-    console.log(this.props.children);
     const { book } = this.props;
     return (
       <div className="book">
@@ -12,13 +24,12 @@ class Book extends Component {
             style={{
               width: 128,
               height: 193,
-              backgroundImage:
-                `url("${book.imageLinks.thumbnail}")`,
+              backgroundImage: `url("${book.imageLinks.thumbnail}")`,
             }}
           >
           </div>
           <div className="book-shelf-changer">
-            <select>
+            <select value={this.state.value} onChange={this.handleChange}>
               <option value="move" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
@@ -28,7 +39,7 @@ class Book extends Component {
           </div>
         </div>
         <div className="book-title">{book.title}</div>
-        <div className="book-authors">{book.authors.join(', ')}</div>
+        <div className="book-authors">{book.authors.join(", ")}</div>
       </div>
     );
   }
