@@ -21,13 +21,17 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelf).then(() => {
       const bookIdx = this.state.books.findIndex((b) => b.id === book.id);
       const updatedBook = { ...book, shelf };
-      
-      this.setState((currentState) => ({
-        books: [
-          ...currentState.books.slice(0, bookIdx),
+
+      const updatedBooks = bookIdx === -1
+        ? [...this.state.books, updatedBook]
+        : [
+          ...this.state.books.slice(0, bookIdx),
           updatedBook,
-          ...currentState.books.slice(bookIdx + 1),
-        ],
+          ...this.state.books.slice(bookIdx + 1),
+        ];
+
+      this.setState(() => ({
+        books: updatedBooks,
       }));
     });
   };
@@ -46,7 +50,7 @@ class BooksApp extends React.Component {
         <Route
           path="/search"
           render={() => (
-            <Search />
+            <Search onUpdateBook={this.updateBook} />
           )}
         />
       </div>
