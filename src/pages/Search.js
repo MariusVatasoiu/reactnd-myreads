@@ -13,10 +13,13 @@ class Search extends Component {
   search = debounce((query) => {
     BooksAPI.search(query).then((response) => {
       let books = response;
+      // If server doesn't return a valid response
       if (!response || response.error) {
         books = [];
       }
-      this.setState(() => ({ books }));
+      this.setState(() => ({
+        books: books.map(this.checkBook),
+      }));
     }).catch(() => {
       this.setState(() => ({ books: [] }));
     });
@@ -33,6 +36,13 @@ class Search extends Component {
     }
 
     this.search(query);
+  };
+
+  checkBook = (book) => {
+    const myBook = this.props.books.find((b) => b.id === book.id);
+    return myBook
+      ? { ...book, shelf: myBook.shelf }
+      : { ...book, shelf: "none" };
   };
 
   render() {
@@ -68,7 +78,10 @@ class Search extends Component {
           <ol className="books-grid">
             {this.state.books.map((book) => (
               <li key={book.id}>
-                <Book book={book} onUpdateBook={this.props.onUpdateBook} />
+                <Book
+                  book={book}
+                  onUpdateBook={this.props.onUpdateBook}
+                />
               </li>
             ))}
           </ol>

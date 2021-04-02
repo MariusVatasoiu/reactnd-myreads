@@ -50,7 +50,7 @@ class BooksApp extends React.Component {
         <Route
           path="/search"
           render={() => (
-            <Search onUpdateBook={this.updateBook} />
+            <Search books={this.state.books} onUpdateBook={this.updateBook} />
           )}
         />
       </div>
