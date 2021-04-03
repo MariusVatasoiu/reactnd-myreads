@@ -2,8 +2,14 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Title from "../Title.js";
 import Bookshelf from "../components/Bookshelf.js";
+import PropTypes from "prop-types";
 
 class Main extends Component {
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    onUpdateBook: PropTypes.func.isRequired,
+  };
+
   categories = [
     { shelf: "currentlyReading", title: "Currently Reading" },
     { shelf: "wantToRead", title: "Want To Read" },

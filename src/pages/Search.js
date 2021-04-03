@@ -3,8 +3,14 @@ import { Link } from "react-router-dom";
 import * as BooksAPI from "../BooksAPI";
 import Book from "../components/Book";
 import { debounce } from "lodash-es";
+import PropTypes from "prop-types";
 
 class Search extends Component {
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    onUpdateBook: PropTypes.func.isRequired,
+  };
+
   state = {
     query: "",
     books: [],
