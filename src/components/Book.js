@@ -5,6 +5,14 @@ class Book extends Component {
     value: this.props.book.shelf,
   };
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.book.shelf !== this.props.book.shelf) {
+      this.setState({
+        value: this.props.book.shelf,
+      });
+    }
+  }
+
   handleChange = (event) => {
     event.persist();
     this.setState(() => ({
